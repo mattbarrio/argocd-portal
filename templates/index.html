@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ArgoCD Portal</title>
+    <link rel="stylesheet" href="/resources/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="filters">
+        <div class="filters-row">
+          <div class="filter-group">
+            <label for="env">Environment:</label>
+            <select id="env" onchange="filterItems()">
+              <option value="">All</option>
+              <option value="dev">Development</option>
+              <option value="staging">Staging</option>
+              <option value="prd">Production</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="active">Status:</label>
+            <select id="active" onchange="filterItems()">
+              <option value="">All</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <div class="filter-group" style="flex: 1">
+            <input
+              type="search"
+              id="search"
+              placeholder="Search deployments..."
+              oninput="filterItems()"
+            />
+          </div>
+          <div class="user-controls">
+            <a href="/logout" class="logout-btn">Logout</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        {{range .}}
+        <a
+          href="{{.URL}}"
+          class="tile"
+          data-name="{{.Name}}"
+          data-env="{{.Env}}"
+          data-active="{{.Status}}"
+          target="_blank"
+        >
+          <div
+            class="tile-image"
+            style="background-image: url('./resources/argocd.png')"
+          ></div>
+          <div class="tile-content">
+            <h3>{{.Name}}</h3>
+            <p class="status" data-status="{{.Status}}">Status: {{.Status}}</p>
+          </div>
+        </a>
+        {{end}}
+        <div class="no-results">No matching deployments found</div>
+      </div>
+    </div>
+
+    <script src="/resources/script.js"></script>
+  </body>
+</html>
